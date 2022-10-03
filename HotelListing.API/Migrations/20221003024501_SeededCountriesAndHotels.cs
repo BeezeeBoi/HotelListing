@@ -21,7 +21,7 @@ namespace HotelListing.API.Migrations
             migrationBuilder.InsertData(
                 table: "Hotels",
                 columns: new[] { "Id", "Address", "CountryId", "Name", "Rating" },
-                values: new object[] { 1, "George Town", 1, "Holiday Inn", 3.7999999999999998 });
+                values: new object[] { 1, "George Town", 1, "Holiday Inn", 3.5 });
 
             migrationBuilder.InsertData(
                 table: "Hotels",
