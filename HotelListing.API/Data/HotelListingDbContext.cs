@@ -20,15 +20,15 @@ namespace HotelListing.API.Data
                 {
                     Id = 1,
                     Name = "Jamaica",
-                    ShortName = "JM",
-                    Region = "Central America"
+                    ShortName = "JM"
+                    // Region = "Central America"
                 },
                 new Country
                 {
                     Id = 2, 
                     Name = "United States of America", 
-                    ShortName = "USA",
-                    Region = "North America"
+                    ShortName = "USA"
+                    // Region = "North America"
                 });
 
             modelBuilder.Entity<Hotel>().HasData(
@@ -47,6 +47,20 @@ namespace HotelListing.API.Data
                     Address = "Knoxville",
                     CountryId = 2,
                     Rating = 4.5
+                });
+
+            modelBuilder.Entity<Region>().HasData(
+                new Region
+                {
+                    Id = 1,
+                    Name = "Central America",
+                    CountryId = 1
+                },
+                new Region
+                {
+                    Id = 2,
+                    Name = "North America",
+                    CountryId = 2
                 });
         }
     }
