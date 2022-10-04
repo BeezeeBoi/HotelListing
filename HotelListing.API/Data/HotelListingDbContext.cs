@@ -20,13 +20,15 @@ namespace HotelListing.API.Data
                 {
                     Id = 1,
                     Name = "Jamaica",
-                    ShortName = "JM"
+                    ShortName = "JM",
+                    Region = "Central America"
                 },
                 new Country
                 {
                     Id = 2, 
                     Name = "United States of America", 
-                    ShortName = "USA"
+                    ShortName = "USA",
+                    Region = "North America"
                 });
 
             modelBuilder.Entity<Hotel>().HasData(
