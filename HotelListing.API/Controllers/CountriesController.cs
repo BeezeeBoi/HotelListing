@@ -52,14 +52,23 @@ namespace HotelListing.API.Controllers
         // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(int id, Country country)
+        public async Task<IActionResult> PutCountry(int id, UpdateCountryDO updateCountryDO)
         {
-            if (id != country.Id)
+            if (id != updateCountryDO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(country).State = EntityState.Modified;
+            // _context.Entry(country).State = EntityState.Modified;
+
+            var country = await _context.Countries.FindAsync(id);
+
+            if (country == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updateCountryDO, country);
 
             try
             {
