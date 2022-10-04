@@ -35,16 +35,18 @@ namespace HotelListing.API.Controllers
 
         // GET: api/Countries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Country>> GetCountry(int id)
+        public async Task<ActionResult<CountryDO>> GetCountry(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
+            var country = await _context.Countries.Include(q => q.HotelList).FirstOrDefaultAsync(q => q.Id == id);
 
             if (country == null)
             {
                 return NotFound();
             }
 
-            return country;
+            var countryDo = _mapper.Map<CountryDO>(country);
+
+            return Ok(countryDo);
         }
 
         // PUT: api/Countries/5

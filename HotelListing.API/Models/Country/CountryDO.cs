@@ -9,5 +9,5 @@ public class CountryDO
     public string ShortName { get; set; }
     public string Region { get; set; }
 
-    public List<HotelDO> Hotels { get; set; }
+    public List<HotelDO> HotelList { get; set; }
 }
