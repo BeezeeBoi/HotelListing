@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HotelListing.API.Data;
@@ -37,7 +32,7 @@ namespace HotelListing.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CountryDO>> GetCountry(int id)
         {
-            var country = await _context.Countries.Include(q => q.HotelList).FirstOrDefaultAsync(q => q.Id == id);
+            var country = await _context.Countries.Include(q => q.HotelList).Include(q => q.Region).FirstOrDefaultAsync(q => q.Id == id);
 
             if (country == null)
             {
@@ -118,7 +113,7 @@ namespace HotelListing.API.Controllers
             return NoContent();
         }
 
-        private bool CountryExists(int id)
+        bool CountryExists(int id)
         {
             return _context.Countries.Any(e => e.Id == id);
         }

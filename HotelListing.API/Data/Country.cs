@@ -7,6 +7,5 @@ public class Country
     public string ShortName { get; set; }
 
     public virtual Region Region { get; set; }
-
     public virtual IList<Hotel> HotelList { get; set; }
 }

@@ -4,16 +4,12 @@
 
 namespace HotelListing.API.Migrations
 {
-    public partial class RegionPropertyAdded : Migration
+    public partial class AddRegionField : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Region",
-                table: "Countries");
-
             migrationBuilder.CreateTable(
-                name: "Region",
+                name: "Regions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,9 +19,9 @@ namespace HotelListing.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Region", x => x.Id);
+                    table.PrimaryKey("PK_Regions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Region_Countries_CountryId",
+                        name: "FK_Regions_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "Id",
@@ -33,18 +29,18 @@ namespace HotelListing.API.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Region",
+                table: "Regions",
                 columns: new[] { "Id", "CountryId", "Name" },
                 values: new object[] { 1, 1, "Central America" });
 
             migrationBuilder.InsertData(
-                table: "Region",
+                table: "Regions",
                 columns: new[] { "Id", "CountryId", "Name" },
                 values: new object[] { 2, 2, "North America" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Region_CountryId",
-                table: "Region",
+                name: "IX_Regions_CountryId",
+                table: "Regions",
                 column: "CountryId",
                 unique: true);
         }
@@ -52,27 +48,7 @@ namespace HotelListing.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Region");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Region",
-                table: "Countries",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.UpdateData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "Region",
-                value: "Central America");
-
-            migrationBuilder.UpdateData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "Region",
-                value: "North America");
+                name: "Regions");
         }
     }
 }

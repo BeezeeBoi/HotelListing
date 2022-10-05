@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using HotelListing.API.Models.Region;
 
 namespace HotelListing.API.Models.Country
 {
     public abstract class BaseCountryDO
     {
         [Required]
-        public int Name { get; set; }
-        public int ShortName { get; set; }
+        public string Name { get; set; }
+        public string ShortName { get; set; }
+
+        public RegionDO Region { get; set; }
     }
 }

@@ -3,6 +3,5 @@
     public class GetCountryDO : BaseCountryDO
     {
         public int Id { get; set; }
-        public string Region { get; set; }
     }
 }

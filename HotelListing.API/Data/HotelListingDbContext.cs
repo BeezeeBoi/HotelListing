@@ -9,6 +9,7 @@ namespace HotelListing.API.Data
             
         }
 
+        public DbSet<Region> Regions { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Country> Countries { get; set; }
 
@@ -21,14 +22,12 @@ namespace HotelListing.API.Data
                     Id = 1,
                     Name = "Jamaica",
                     ShortName = "JM"
-                    // Region = "Central America"
                 },
                 new Country
                 {
                     Id = 2, 
                     Name = "United States of America", 
                     ShortName = "USA"
-                    // Region = "North America"
                 });
 
             modelBuilder.Entity<Hotel>().HasData(
@@ -38,7 +37,7 @@ namespace HotelListing.API.Data
                     Name = "Holiday Inn",
                     Address = "George Town",
                     CountryId = 1,
-                    Rating = 3.8
+                    Rating = 3.5
                 },
                 new Hotel
                 {

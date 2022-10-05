@@ -87,7 +87,7 @@ namespace HotelListing.API.Migrations
                             Address = "George Town",
                             CountryId = 1,
                             Name = "Holiday Inn",
-                            Rating = 3.7999999999999998
+                            Rating = 3.5
                         },
                         new
                         {
@@ -118,7 +118,7 @@ namespace HotelListing.API.Migrations
                     b.HasIndex("CountryId")
                         .IsUnique();
 
-                    b.ToTable("Region");
+                    b.ToTable("Regions");
 
                     b.HasData(
                         new

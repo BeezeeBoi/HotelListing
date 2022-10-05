@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelListing.API.Migrations
 {
     [DbContext(typeof(HotelListingDbContext))]
-    [Migration("20221004212110_RegionPropertyAdded")]
-    partial class RegionPropertyAdded
+    [Migration("20221005085234_UpdateHotelRating")]
+    partial class UpdateHotelRating
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,7 +89,7 @@ namespace HotelListing.API.Migrations
                             Address = "George Town",
                             CountryId = 1,
                             Name = "Holiday Inn",
-                            Rating = 3.7999999999999998
+                            Rating = 3.5
                         },
                         new
                         {
@@ -98,42 +98,6 @@ namespace HotelListing.API.Migrations
                             CountryId = 2,
                             Name = "Hilton",
                             Rating = 4.5
-                        });
-                });
-
-            modelBuilder.Entity("HotelListing.API.Data.Region", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId")
-                        .IsUnique();
-
-                    b.ToTable("Region");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CountryId = 1,
-                            Name = "Central America"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CountryId = 2,
-                            Name = "North America"
                         });
                 });
 
@@ -148,22 +112,9 @@ namespace HotelListing.API.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("HotelListing.API.Data.Region", b =>
-                {
-                    b.HasOne("HotelListing.API.Data.Country", "Country")
-                        .WithOne("Region")
-                        .HasForeignKey("HotelListing.API.Data.Region", "CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-                });
-
             modelBuilder.Entity("HotelListing.API.Data.Country", b =>
                 {
                     b.Navigation("HotelList");
-
-                    b.Navigation("Region");
                 });
 #pragma warning restore 612, 618
         }
