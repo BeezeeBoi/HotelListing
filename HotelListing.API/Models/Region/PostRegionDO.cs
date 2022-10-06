@@ -1,6 +1,6 @@
 ﻿namespace HotelListing.API.Models.Region;
 
-public class GetRegionDO : BaseRegionDO
+public class PostRegionDO : BaseRegionDO
 {
 
 }

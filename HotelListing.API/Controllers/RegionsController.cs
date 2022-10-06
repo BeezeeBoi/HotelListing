@@ -3,6 +3,7 @@ using HotelListing.API.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HotelListing.API.Data;
+using HotelListing.API.Models.Region;
 
 namespace HotelListing.API.Controllers;
 
@@ -23,7 +24,10 @@ public class RegionsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Region>>> GetRegions()
     {
-        return await _regionsRepository.GetAllAsync();
+        var hotels = await _regionsRepository.GetAllAsync();
+        var records = _mapper.Map<List<GetRegionDO>>(hotels);
+        
+        return Ok(records);
     }
 
     // GET: api/Regions/5
@@ -37,18 +41,29 @@ public class RegionsController : ControllerBase
             return NotFound();
         }
 
-        return region;
+        var regionDO = _mapper.Map<RegionDO>(region);
+
+        return Ok(regionDO);
     }
 
     // PUT: api/Regions/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutRegion(int id, Region region)
+    public async Task<IActionResult> PutRegion(int id, UpdateRegionDO updateRegionDO)
     {
-        if (id != region.Id)
+        if (id != updateRegionDO.Id)
         {
             return BadRequest();
         }
+
+        var region = await _regionsRepository.GetAsync(id);
+
+        if (region == null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(updateRegionDO, region);
 
         try
         {
@@ -56,7 +71,7 @@ public class RegionsController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!RegionExists(id))
+            if (!await RegionExists(id))
             {
                 return NotFound();
             }
@@ -72,8 +87,10 @@ public class RegionsController : ControllerBase
     // POST: api/Regions
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Region>> PostRegion(Region region)
+    public async Task<ActionResult<Region>> PostRegion(PostRegionDO postRegionDO)
     {
+        var region = _mapper.Map<Region>(postRegionDO);
+
         await _regionsRepository.AddAsync(region);
 
         return CreatedAtAction("GetRegion", new { id = region.Id }, region);

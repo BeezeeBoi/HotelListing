@@ -26,6 +26,7 @@ public class CountriesController : ControllerBase
     {
         var countries = await _countriesRepository.GetAllAsync();
         var records = _mapper.Map<List<GetCountryDO>>(countries);
+        
         return Ok(records);
     }
 

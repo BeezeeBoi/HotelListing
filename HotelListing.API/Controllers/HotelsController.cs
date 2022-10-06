@@ -26,6 +26,7 @@ public class HotelsController : ControllerBase
     {
         var hotels = await _hotelsRepository.GetAllAsync();
         var records = _mapper.Map<List<GetHotelDO>>(hotels);
+        
         return Ok(records);
     }
 
