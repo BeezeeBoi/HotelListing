@@ -1,5 +1,7 @@
-﻿namespace HotelListing.API.Contracts;
+﻿using HotelListing.API.Data;
 
-public interface IRegionsRepository
+namespace HotelListing.API.Contracts;
+
+public interface IRegionsRepository : IGenericRepository<Region>
 {
 }
