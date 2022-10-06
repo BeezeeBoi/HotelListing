@@ -13,7 +13,7 @@ namespace HotelListing.API.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
-        private readonly HotelListingDbContext _context;
+        readonly HotelListingDbContext _context;
 
         public RegionsController(HotelListingDbContext context)
         {
@@ -99,7 +99,7 @@ namespace HotelListing.API.Controllers
             return NoContent();
         }
 
-        private bool RegionExists(int id)
+        bool RegionExists(int id)
         {
             return _context.Regions.Any(e => e.Id == id);
         }
