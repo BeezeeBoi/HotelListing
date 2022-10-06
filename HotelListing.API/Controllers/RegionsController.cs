@@ -22,10 +22,10 @@ public class RegionsController : ControllerBase
 
     // GET: api/Regions
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Region>>> GetRegions()
+    public async Task<ActionResult<IEnumerable<GetRegionDO>>> GetRegions()
     {
-        var hotels = await _regionsRepository.GetAllAsync();
-        var records = _mapper.Map<List<GetRegionDO>>(hotels);
+        var regions = await _regionsRepository.GetAllAsync();
+        var records = _mapper.Map<List<GetRegionDO>>(regions);
         
         return Ok(records);
     }
