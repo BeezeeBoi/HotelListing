@@ -1,4 +1,5 @@
 ﻿using HotelListing.API.Models.Hotel;
+using HotelListing.API.Models.Region;
 
 namespace HotelListing.API.Models.Country;
 
