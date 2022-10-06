@@ -17,5 +17,10 @@ namespace HotelListing.API.Repository
         {
             return await _context.Countries.Include(q => q.HotelList).Include(q => q.Region).FirstOrDefaultAsync(q => q.Id == id);
         }
+
+        public new async Task<List<Country>> GetAllAsync()
+        {
+            return await _context.Countries.Include(q => q.Region).ToListAsync();
+        }
     }
 }
