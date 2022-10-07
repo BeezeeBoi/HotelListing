@@ -19,7 +19,7 @@ public class HotelsRepository : GenericRepository<Hotel>, IHotelsRepository
         {
             return null;
         }
-
-        return await _context.Hotels.Include(q => q.Address).FirstOrDefaultAsync(q => q.Id == id);
+    
+        return await _context.Hotels.Include(t => t.Address).FirstOrDefaultAsync(q => q.Id == id);
     }
 }
