@@ -22,6 +22,6 @@ public class HotelListingDbContext : IdentityDbContext<User>
         modelBuilder.ApplyConfiguration(new IdentityRoleConfig());
         modelBuilder.ApplyConfiguration(new CountryConfig());
         modelBuilder.ApplyConfiguration(new HotelConfig());
-        modelBuilder.ApplyConfiguration(new HotelConfig());
+        modelBuilder.ApplyConfiguration(new RegionConfig());
     }
 }

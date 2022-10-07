@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HotelListing.API.Data.Config;
 
-public class RegionConfig : IEntityTypeConfiguration<Hotel>
+public class RegionConfig : IEntityTypeConfiguration<Region>
 {
-    public void Configure(EntityTypeBuilder<Hotel> builder)
+    public void Configure(EntityTypeBuilder<Region> builder)
     {
         builder.HasData(
             new Region
