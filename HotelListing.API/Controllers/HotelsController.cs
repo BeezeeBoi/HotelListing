@@ -87,8 +87,10 @@ public class HotelsController : ControllerBase
     // POST: api/Hotels
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+    public async Task<ActionResult<Hotel>> PostHotel(PostHotelDO postHotelDO)
     {
+        var hotel = _mapper.Map<Hotel>(postHotelDO);
+
         await _hotelsRepository.AddAsync(hotel);
 
         return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
