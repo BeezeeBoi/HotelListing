@@ -9,5 +9,5 @@ public abstract class BaseCountryDO
     public string Name { get; set; }
     public string ShortName { get; set; }
 
-    public RegionDO Region { get; set; }
+    public IncludeRegionDO Region { get; set; }
 }
