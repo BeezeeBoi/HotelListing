@@ -22,7 +22,7 @@ builder.Services.AddDbContext<HotelListingDbContext>(options =>
 builder.Services
     .AddIdentityCore<User>()
     .AddRoles<IdentityRole>()
-    .AddTokenProvider<DataProtectorTokenProvider<User>>("HotelListingApi")
+    .AddTokenProvider<DataProtectorTokenProvider<User>>("HotelListingAPI")
     .AddEntityFrameworkStores<HotelListingDbContext>()
     .AddDefaultTokenProviders();
 

@@ -18,7 +18,7 @@ public class AuthManager : IAuthManager
     readonly IConfiguration _configuration;
     User _user;
 
-    const string LoginProvider = "HotelListApi";
+    const string LoginProvider = "HotelListAPI";
     const string RefreshToken = "RefreshToken";
 
     public AuthManager(IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
@@ -26,6 +26,8 @@ public class AuthManager : IAuthManager
         _mapper = mapper;
         _userManager = userManager;
         _configuration = configuration;
+
+        _userManager.RegisterTokenProvider(LoginProvider, new AuthenticatorTokenProvider<User>());
     }
 
     public async Task<AuthResponseDO> Login(UserLoginDO loginDO)
