@@ -26,6 +26,8 @@ public class AuthManager : IAuthManager
         _mapper = mapper;
         _userManager = userManager;
         _configuration = configuration;
+
+        _userManager.RegisterTokenProvider(LoginProvider, new AuthenticatorTokenProvider<User>());
     }
 
     public async Task<AuthResponseDO> Login(UserLoginDO loginDO)
@@ -50,8 +52,6 @@ public class AuthManager : IAuthManager
 
     public async Task<string> CreateRefreshToken()
     {
-        _userManager.RegisterTokenProvider(LoginProvider, new AuthenticatorTokenProvider<User>());
-
         await _userManager.RemoveAuthenticationTokenAsync(_user, LoginProvider, RefreshToken);
         var newRefreshToken = await _userManager.GenerateUserTokenAsync(_user, LoginProvider, RefreshToken);
         var result =
@@ -107,8 +107,6 @@ public class AuthManager : IAuthManager
 
     async Task<string> GenerateToken()
     {
-        _userManager.RegisterTokenProvider(LoginProvider, new AuthenticatorTokenProvider<User>());
-
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var roles = await _userManager.GetRolesAsync(_user);
