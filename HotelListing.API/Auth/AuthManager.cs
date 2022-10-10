@@ -2,14 +2,13 @@
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
-using HotelListing.API.Contracts;
 using HotelListing.API.Data;
 using HotelListing.API.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace HotelListing.API.Repository;
+namespace HotelListing.API.Auth;
 
 public class AuthManager : IAuthManager
 {
@@ -64,7 +63,7 @@ public class AuthManager : IAuthManager
         var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(request.Token);
         var username = tokenContent.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Email)?.Value;
-        
+
         _user = await _userManager.FindByEmailAsync(username);
 
         if (_user == null || _user.Id != request.UserId)
@@ -112,7 +111,7 @@ public class AuthManager : IAuthManager
         var roles = await _userManager.GetRolesAsync(_user);
         var roleClaims = roles.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
         var userClaims = await _userManager.GetClaimsAsync(_user);
-        
+
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, _user.Email),
@@ -127,7 +126,7 @@ public class AuthManager : IAuthManager
             audience: _configuration["JwtSettings:Audience"],
             claims: claims,
             expires: DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["JwtSettings:DurationInMinutes"])),
-            signingCredentials:credentials
+            signingCredentials: credentials
             );
 
         return new JwtSecurityTokenHandler().WriteToken(token);

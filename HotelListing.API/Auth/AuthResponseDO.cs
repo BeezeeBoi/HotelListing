@@ -1,4 +1,4 @@
-﻿namespace HotelListing.API.Models.Users
+﻿namespace HotelListing.API.Auth
 {
     public class AuthResponseDO
     {
