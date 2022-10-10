@@ -1,7 +1,6 @@
 ﻿using HotelListing.API.Contracts;
 using HotelListing.API.Models.Users;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace HotelListing.API.Controllers;
 
@@ -89,8 +88,6 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDO request)
     {
-        _logger.LogInformation($"Login attempt for {request.UserId}, Token: {request.Token}, RefreshToken: {request.RefreshToken}");
-
         try
         {
             var authResponse = await _authManager.VerifyRefreshToken(request);

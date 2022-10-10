@@ -27,5 +27,7 @@ public class AutoMapperConfig : Profile
         CreateMap<Hotel, UpdateHotelDO>().ReverseMap();
 
         CreateMap<User, UserDO>().ReverseMap();
+        CreateMap<User, AuthResponseDO>().ReverseMap();
+        CreateMap<User, UserLoginDO>().ReverseMap();
     }
 }
