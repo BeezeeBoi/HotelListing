@@ -1,6 +1,7 @@
 ﻿using HotelListing.API.Contracts;
 using HotelListing.API.Models.Users;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace HotelListing.API.Controllers;
 
@@ -9,10 +10,12 @@ namespace HotelListing.API.Controllers;
 public class AuthenticationController : ControllerBase
 {
     readonly IAuthManager _authManager;
+    readonly ILogger<AuthenticationController> _logger;
 
-    public AuthenticationController(IAuthManager authManager)
+    public AuthenticationController(IAuthManager authManager, ILogger<AuthenticationController> logger)
     {
         _authManager = authManager;
+        _logger = logger;
     }
 
     // POST: api/Authentication/register
@@ -23,20 +26,30 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Register([FromBody] UserDO userDO)
     {
-        var errors = await _authManager.Register(userDO);
+        _logger.LogInformation($"Registration attempt for {userDO.Email}");
 
-        var identityErrors = errors.ToList();
-        if (identityErrors.Any())
+        try
         {
-            foreach (var error in identityErrors)
+            var errors = await _authManager.Register(userDO);
+
+            var identityErrors = errors.ToList();
+            if (identityErrors.Any())
             {
-                ModelState.AddModelError(error.Code, error.Description);
+                foreach (var error in identityErrors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return BadRequest(ModelState);
             }
 
-            return BadRequest(ModelState);
+            return Ok();
         }
-
-        return Ok();
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Error occurred in {nameof(Register)} - User Registration attempt for {userDO.Email}");
+            return Problem($"Something went wrong in the {nameof(Register)}", statusCode: 500);
+        }
     }
 
     // POST: api/Authentication/login
@@ -47,14 +60,25 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Login([FromBody] UserLoginDO userLoginDO)
     {
-        var authResponse = await _authManager.Login(userLoginDO);
+        _logger.LogInformation($"Login attempt for {userLoginDO.Email}");
 
-        if (authResponse == null)
+        try
         {
-            return Unauthorized();
+            var authResponse = await _authManager.Login(userLoginDO);
+
+            if (authResponse == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(authResponse);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Something went wrong in the {nameof(Login)}");
+            return Problem($"Something went wrong in the {nameof(Login)}", statusCode: 500);
         }
 
-        return Ok(authResponse);
     }
 
     // POST: api/Authentication/refreshToken
@@ -65,13 +89,23 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDO request)
     {
-        var authResponse = await _authManager.VerifyRefreshToken(request);
+        _logger.LogInformation($"Login attempt for {request.UserId}, Token: {request.Token}, RefreshToken: {request.RefreshToken}");
 
-        if (authResponse == null)
+        try
         {
-            return Unauthorized();
-        }
+            var authResponse = await _authManager.VerifyRefreshToken(request);
 
-        return Ok(authResponse);
+            if (authResponse == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(authResponse);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Something went wrong in {nameof(RefreshToken)}");
+            return Problem($"Something went wrong in {nameof(RefreshToken)}", statusCode: 500);
+        }
     }
 }
