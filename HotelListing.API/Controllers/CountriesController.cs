@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace HotelListing.API.Controllers;
 
 [Route("api/[controller]")]
+[ApiVersion("1", Deprecated = false)]
 [ApiController]
 public class CountriesController : ControllerBase
 {

@@ -1,5 +1,6 @@
 ﻿using HotelListing.API.Contracts;
 using HotelListing.API.Data;
+using HotelListing.API.Models.Request;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelListing.API.Repository;
@@ -11,6 +12,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public GenericRepository(HotelListingDbContext context)
     {
         _context = context;
+    }
+
+    public async Task<PagedResult<TResult>> GetAllAsync<TResult>(QueryParameters queryParameters)
+    {
+        var totalSize = await _context.Set<T>().CountAsync();
+
+        return null;
     }
 
     public async Task<T> AddAsync(T entity)
