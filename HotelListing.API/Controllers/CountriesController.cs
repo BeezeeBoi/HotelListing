@@ -3,6 +3,7 @@ using HotelListing.API.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HotelListing.API.Data;
+using HotelListing.API.Exceptions;
 using HotelListing.API.Models.Country;
 using Microsoft.AspNetCore.Authorization;
 
@@ -39,7 +40,7 @@ public class CountriesController : ControllerBase
 
         if (country == null)
         {
-            return NotFound();
+            throw new NotFoundException(nameof(GetCountry), id);
         }
 
         var countryDo = _mapper.Map<CountryDO>(country);

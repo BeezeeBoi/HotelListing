@@ -57,7 +57,7 @@ public class AuthManager : IAuthManager
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error has occurred in {nameof(Login)}");
+            _logger.LogError(e, $"Error has occurred in {nameof(Login)}, with the user {loginDO.Email}");
             return new AuthResponseDO();
         }
     }
