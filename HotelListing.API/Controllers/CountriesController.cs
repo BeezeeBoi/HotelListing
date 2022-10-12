@@ -18,7 +18,6 @@ public class CountriesController : ControllerBase
     public CountriesController(ICountriesRepository countriesRepository)
     {
         _countriesRepository = countriesRepository;
-        _mapper = mapper;
     }
 
     // GET: api/Countries/GetAllCountries

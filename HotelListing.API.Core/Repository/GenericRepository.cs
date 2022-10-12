@@ -27,8 +27,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
 
         var result = await _context.Set<T>().FindAsync(id);
+        
+        if (result == null)
+        {
+            throw new NotFoundException(nameof(GetAsync), id);
+        }
 
-        return result ?? null;
+        return result;
     }
 
     public async Task<TResult> GetAsync<TResult>(int? id)
