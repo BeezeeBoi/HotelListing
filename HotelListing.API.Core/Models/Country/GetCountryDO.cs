@@ -6,5 +6,5 @@ public class GetCountryDO : BaseCountryDO
 {
     public int Id { get; set; }
 
-    public IncludeRegionDO Region { get; set; }
+    public IncludeRegionDO? Region { get; set; }
 }

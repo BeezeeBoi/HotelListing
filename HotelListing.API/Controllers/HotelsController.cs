@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HotelListing.API.Contracts;
 using HotelListing.API.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

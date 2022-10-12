@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using HotelListing.API.Contracts;
-using HotelListing.API.Core.Contracts;
-using HotelListing.API.Core.Exceptions;
+﻿using HotelListing.API.Core.Contracts;
 using HotelListing.API.Core.Models.Country;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HotelListing.API.Data;
 using HotelListing.API.Models.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OData.Query;
@@ -18,9 +14,8 @@ namespace HotelListing.API.Controllers;
 public class CountriesController : ControllerBase
 {
     readonly ICountriesRepository _countriesRepository;
-    readonly IMapper _mapper;
 
-    public CountriesController(ICountriesRepository countriesRepository, IMapper mapper)
+    public CountriesController(ICountriesRepository countriesRepository)
     {
         _countriesRepository = countriesRepository;
         _mapper = mapper;
@@ -32,10 +27,9 @@ public class CountriesController : ControllerBase
     [ResponseCache(NoStore = true)]
     public async Task<ActionResult<IEnumerable<GetCountryDO>>> GetCountries()
     {
-        var countries = await _countriesRepository.GetAllAsync();
-        var records = _mapper.Map<List<GetCountryDO>>(countries);
-        
-        return Ok(records);
+        var countries = await _countriesRepository.GetAllAsync<GetCountryDO>();
+
+        return Ok(countries);
     }
 
     // GET: api/Countries/GetPagedCountries/?StartIndex=0&PageSize=25&PageNumber=1
@@ -51,15 +45,7 @@ public class CountriesController : ControllerBase
     public async Task<ActionResult<CountryDO>> GetCountry(int id)
     {
         var country = await _countriesRepository.GetDetails(id);
-
-        if (country == null)
-        {
-            throw new NotFoundException(nameof(GetCountry), id);
-        }
-
-        var countryDo = _mapper.Map<CountryDO>(country);
-
-        return Ok(countryDo);
+        return Ok(country);
     }
 
     // PUT: api/Countries/5
@@ -73,18 +59,9 @@ public class CountriesController : ControllerBase
             return BadRequest();
         }
 
-        var country = await _countriesRepository.GetAsync(id);
-
-        if (country == null)
-        {
-            return NotFound();
-        }
-
-        _mapper.Map(updateCountryDO, country);
-
         try
         {
-            await _countriesRepository.UpdateAsync(country);
+            await _countriesRepository.UpdateAsync(id, updateCountryDO);
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -105,13 +82,10 @@ public class CountriesController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<Country>> PostCountry(PostCountryDO countryDO)
+    public async Task<ActionResult<CountryDO>> PostCountry(PostCountryDO countryDO)
     {
-        var country = _mapper.Map<Country>(countryDO);
-
-        await _countriesRepository.AddAsync(country);
-
-        return CreatedAtAction("GetCountry", new { id = country.Id }, country);
+        var country = await _countriesRepository.AddAsync<PostCountryDO, GetCountryDO>(countryDO);
+        return CreatedAtAction(nameof(PostCountry), new { id = country.Id }, country);
     }
 
     // DELETE: api/Countries/5
@@ -119,14 +93,7 @@ public class CountriesController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteCountry(int id)
     {
-        var country = await _countriesRepository.GetAsync(id);
-        if (country == null)
-        {
-            return NotFound();
-        }
-
         await _countriesRepository.DeleteAsync(id);
-
         return NoContent();
     }
 

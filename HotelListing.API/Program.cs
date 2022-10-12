@@ -1,5 +1,4 @@
 using System.Text;
-using HotelListing.API.Contracts;
 using HotelListing.API.Core.Config;
 using HotelListing.API.Core.Contracts;
 using HotelListing.API.Core.Middleware;
